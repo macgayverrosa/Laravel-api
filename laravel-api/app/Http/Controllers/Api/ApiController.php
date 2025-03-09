@@ -74,4 +74,15 @@ class ApiController extends Controller
             'message' => 'User logged out successfully'
         ]);
     }
+
+    // User API
+    public function user($id){
+        $user = User::find($id);
+        return response()->json([
+            'status' => 200,
+            'success' => true,
+            'message' => 'User details',
+            'user' => $user
+        ]);
+    }
 }
