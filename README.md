@@ -143,6 +143,15 @@ POST /api/logout
 | PATCH  | `/api/posts/{id}` | Update a post             | ✅ (Only owner) |
 | DELETE | `/api/posts/{id}` | Delete a post             | ✅ (Only owner) |
 
+### **Users API**
+
+| Method | Endpoint          | Description               | Auth Required  |
+| ------ | ----------------- | ------------------------- | -------------- |
+| GET    | `/api/users/{id}` | Get a specific user       | ✅             |
+| POST   | `/api/register`   | Register new user         |                |
+| POST   | `/api/login`      | Login a user              |                |
+| POST   | `/api/logout`     | Logout a user             | ✅             |
+
 ### **Weather API**
 
 | Method | Endpoint       | Description              |
