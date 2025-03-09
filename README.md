@@ -1,24 +1,18 @@
-Laravel API Project
+# Juicebox - Laravel API Test
 
 This is a RESTful API built with Laravel 12, implementing authentication, CRUD operations, background jobs, and external API integration.
 
-🚀 Features
+## Features 🚀
 
-User Authentication (Register, Login, Logout) using Laravel Sanctum
+- User Authentication (Register, Login, Logout) using Laravel Sanctum
+- CRUD Operations for Posts
+- Weather API Integration (fetches and caches current weather data)
+- Queued Job for Welcome Emails (Sends an email when a user registers)
+- Background Job for Weather Updates (Runs every hour to fetch new weather data)
+- Pagination & Validation
+- Proper HTTP Status Codes & Error Handling
 
-CRUD Operations for Posts
-
-Weather API Integration (fetches and caches current weather data)
-
-Queued Job for Welcome Emails (Sends an email when a user registers)
-
-Background Job for Weather Updates (Runs every hour to fetch new weather data)
-
-Pagination & Validation
-
-Proper HTTP Status Codes & Error Handling
-
-🛠 Installation & Setup
+## Installation & Setup 🛠
 
 1. Clone the Repository
 
@@ -67,7 +61,7 @@ php artisan serve
 
 API will be accessible at: http://127.0.0.1:8000/api
 
-🔐 Authentication
+## Authentication 🔐
 
 Register a New User
 

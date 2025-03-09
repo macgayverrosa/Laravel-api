@@ -80,7 +80,6 @@ class ApiController extends Controller
     // Profile API
     public function profile(Request $request){
         try{
-
             $user = auth()->user();
             return response()->json([
                 'status' => 200,
