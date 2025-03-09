@@ -1,4 +1,4 @@
-# Laravel API Project
+# Juicebox - Laravel API Test
 
 This is a RESTful API built with **Laravel 12**, implementing authentication, CRUD operations, background jobs, and external API integration.
 
@@ -64,7 +64,7 @@ MAIL_FROM_NAME="Laravel API"
 ### **4. Run Migrations & Seed Database**
 
 ```bash
-php artisan migrate --seed
+php artisan migrate
 ```
 
 ### **5. Start the Laravel Development Server**
@@ -225,18 +225,3 @@ Add this line:
 ```bash
 * * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
 ```
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-## 📞 Support
-
-If you have any issues, feel free to open an issue or contribute via pull requests.
-
-Happy Coding! 🚀
-
