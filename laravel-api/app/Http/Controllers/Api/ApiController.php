@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Jobs\SendWelcomeEmailJob;
 
 class ApiController extends Controller
 {
@@ -19,6 +20,9 @@ class ApiController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
+
+        // Dispatch welcome email job
+        dispatch(new SendWelcomeEmailJob($user));
 
         return response()->json([
             'status' => 200,
