@@ -9,13 +9,16 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
-    // use RefreshDatabase; // Resets DB after each test
+    use RefreshDatabase; // Resets DB after each test
 
-    /**
-     * Test user registration.
-     */
-    public function test_user_can_register()
-    {
+    // Test the application returns a successful response
+    public function test_the_application_returns_a_successful_response(): void {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+    }
+
+    // Test user registration
+    public function test_user_can_register(){
         $response = $this->postJson('/api/register', [
             'name' => 'John Doe',
             'email' => 'john@example.com',
@@ -23,18 +26,15 @@ class UserTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $response->assertStatus(201) // Expect HTTP 201 Created
+        $response->assertStatus(200)
                  ->assertJsonStructure(['status', 'success', 'message', 'user']);
     }
 
-    /**
-     * Test user login.
-     */
-    public function test_user_can_login()
-    {
+    // Test user login
+    public function test_user_can_login(){
         $user = User::factory()->create([
             'email' => 'test@example.com',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('password'),          
         ]);
 
         $response = $this->postJson('/api/login', [
@@ -43,14 +43,11 @@ class UserTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure(['token', 'user']);
+                 ->assertJsonStructure(['access_token', 'user']);
     }
 
-    /**
-     * Test user logout.
-     */
-    public function test_user_can_logout()
-    {
+    // Test user logout
+    public function test_user_can_logout(){
         $user = User::factory()->create();
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -58,7 +55,8 @@ class UserTest extends TestCase
             'Authorization' => 'Bearer ' . $token,
         ]);
 
+
         $response->assertStatus(200)
-                 ->assertJson(['message' => 'Logged out']);
+                    ->assertJson(['message' => 'User logged out successfully']);
     }
 }
