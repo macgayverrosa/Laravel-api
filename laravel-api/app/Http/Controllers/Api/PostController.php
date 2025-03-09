@@ -68,7 +68,6 @@ class PostController extends Controller
         ]);
 
         $post->update($request->only(['title', 'content']));
-
         return response()->json(['message' => 'Post updated', 'post' => $post], 200);
     }
 
