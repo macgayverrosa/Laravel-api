@@ -38,7 +38,6 @@ class ApiController extends Controller
         $credentials = $request->only('email', 'password');
         if (auth()->attempt($credentials)) {
             $user = auth()->user();
-            // $token = $user->createToken('authToken')->accessToken;
             $token = $user->createToken('authToken')->plainTextToken;
 
             return response()->json([
