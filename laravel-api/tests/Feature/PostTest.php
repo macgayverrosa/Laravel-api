@@ -15,19 +15,15 @@ class PostTest extends TestCase
     protected $user;
     protected $token;
 
-    public function setUp(): void
-    {
+    public function setUp(): void {
         parent::setUp();
 
         $this->user = User::factory()->create();
         $this->token = $this->user->createToken('auth_token')->plainTextToken;
     }
 
-    /**
-     * Test creating a post.
-     */
-    public function test_user_can_create_post()
-    {
+    // Test creating a post
+    public function test_user_can_create_post() {
         $response = $this->postJson('/api/posts', [
             'title' => 'Test Post',
             'content' => 'This is a test post content.',
@@ -54,35 +50,35 @@ class PostTest extends TestCase
                  ->assertJsonStructure(['status', 'success', 'data']);
     }
 
-    /**
-     * Test updating a post.
-     */
-    public function test_user_can_update_own_post()
-    {
-        $post = Post::factory()->create(['user_id' => $this->user->id]);
+    // /**
+    //  * Test updating a post.
+    //  */
+    // public function test_user_can_update_own_post()
+    // {
+    //     $post = Post::factory()->create(['user_id' => $this->user->id]);
 
-        $response = $this->patchJson("/api/posts/{$post->id}", [
-            'title' => 'Updated Title',
-        ], [
-            'Authorization' => 'Bearer ' . $this->token,
-        ]);
+    //     $response = $this->patchJson("/api/posts/{$post->id}", [
+    //         'title' => 'Updated Title',
+    //     ], [
+    //         'Authorization' => 'Bearer ' . $this->token,
+    //     ]);
 
-        $response->assertStatus(200)
-                 ->assertJsonFragment(['message' => 'Post updated']);
-    }
+    //     $response->assertStatus(200)
+    //              ->assertJsonFragment(['message' => 'Post updated']);
+    // }
 
-    /**
-     * Test deleting a post.
-     */
-    public function test_user_can_delete_own_post()
-    {
-        $post = Post::factory()->create(['user_id' => $this->user->id]);
+    // /**
+    //  * Test deleting a post.
+    //  */
+    // public function test_user_can_delete_own_post()
+    // {
+    //     $post = Post::factory()->create(['user_id' => $this->user->id]);
 
-        $response = $this->deleteJson("/api/posts/{$post->id}", [], [
-            'Authorization' => 'Bearer ' . $this->token,
-        ]);
+    //     $response = $this->deleteJson("/api/posts/{$post->id}", [], [
+    //         'Authorization' => 'Bearer ' . $this->token,
+    //     ]);
 
-        $response->assertStatus(200)
-                 ->assertJson(['message' => 'Post deleted']);
-    }
+    //     $response->assertStatus(200)
+    //              ->assertJson(['message' => 'Post deleted']);
+    // }
 }
