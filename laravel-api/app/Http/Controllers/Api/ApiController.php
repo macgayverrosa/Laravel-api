@@ -100,6 +100,8 @@ class ApiController extends Controller
     public function logout(){
         auth()->user()->tokens()->delete();
         return response()->json([
+            'status' => 200,
+            'success' => true,
             'message' => 'User logged out successfully'
         ]);
     }

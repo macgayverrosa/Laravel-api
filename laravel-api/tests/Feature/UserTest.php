@@ -51,12 +51,11 @@ class UserTest extends TestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        $response = $this->postJson('/api/logout', [], [
+        $response = $this->getJson('/api/logout', [
             'Authorization' => 'Bearer ' . $token,
         ]);
 
-
         $response->assertStatus(200)
-                    ->assertJson(['message' => 'User logged out successfully']);
+                 ->assertJson(['message' => 'User logged out successfully']);
     }
 }
