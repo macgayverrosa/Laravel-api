@@ -1,40 +1,243 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Juicebox - Laravel API Test
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a RESTful API built with **Laravel 12**, implementing authentication, CRUD operations, background jobs, and external API integration.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **User Authentication** (Register, Login, Logout) using **Laravel Sanctum**
+- **CRUD Operations** for Posts
+- **Weather API Integration** (fetches and caches current weather data)
+- **Queued Job for Welcome Emails** (Sends an email when a user registers)
+- **Background Job for Weather Updates** (Runs every hour to fetch new weather data)
+- **Pagination & Validation**
+- **Proper HTTP Status Codes & Error Handling**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠 Installation & Setup
 
+### **1. Clone the Repository**
 
+```bash
+git clone https://github.com/your-repo/laravel-api.git
+cd laravel-api
+```
 
-## Contributing
+### **2. Install Dependencies**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+```
 
-## Code of Conduct
+### **3. Set Up Environment Variables**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Copy the `.env.example` file and configure your database and API keys:
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Update the following values in `.env`:
 
-## License
+```env
+APP_NAME=LaravelAPI
+APP_URL=http://127.0.0.1:8000
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+
+WEATHER_API_KEY=your_weather_api_key
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_mailtrap_username
+MAIL_PASSWORD=your_mailtrap_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your_email@example.com
+MAIL_FROM_NAME="Laravel API"
+```
+
+### **4. Run Migrations & Seed Database**
+
+```bash
+php artisan migrate
+```
+
+### **5. Start the Laravel Development Server**
+
+```bash
+php artisan serve
+```
+
+API will be accessible at: `http://127.0.0.1:8000/api`
+
+---
+
+## 🔐 Authentication
+
+### **Register a New User**
+
+```http
+POST /api/register
+```
+
+**Body:**
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}
+```
+
+### **Login a User**
+
+```http
+POST /api/login
+```
+
+**Body:**
+
+```json
+{
+  "email": "john@example.com",
+  "password": "password"
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "your_generated_token"
+}
+```
+
+💡 Use this **Bearer Token** for authentication in all protected routes.
+
+### **Logout a User**
+
+```http
+POST /api/logout
+```
+
+💡 Requires `Authorization: Bearer your_token`
+
+---
+
+## 📌 API Endpoints
+
+### **Posts API**
+
+| Method | Endpoint          | Description               | Auth Required  |
+| ------ | ----------------- | ------------------------- | -------------- |
+| GET    | `/api/posts`      | Get all posts (paginated) | ✅              |
+| GET    | `/api/posts/{id}` | Get a single post by ID   | ✅              |
+| POST   | `/api/posts`      | Create a new post         | ✅              |
+| PATCH  | `/api/posts/{id}` | Update a post             | ✅ (Only owner) |
+| DELETE | `/api/posts/{id}` | Delete a post             | ✅ (Only owner) |
+
+### **Users API**
+
+| Method | Endpoint          | Description               | Auth Required  |
+| ------ | ----------------- | ------------------------- | -------------- |
+| GET    | `/api/users/{id}` | Get a specific user       | ✅             |
+| POST   | `/api/register`   | Register new user         |                |
+| POST   | `/api/login`      | Login a user              |                |
+| POST   | `/api/logout`     | Logout a user             | ✅             |
+
+### **Weather API**
+
+| Method | Endpoint       | Description              |
+| ------ | -------------- | ------------------------ |
+| GET    | `/api/weather` | Get current weather data |
+
+---
+
+## ⏳ Queued Jobs
+
+### **1. Sending Welcome Email** (when a user registers)
+
+- This job runs in the background using Laravel queues.
+- Start the queue worker:
+
+```bash
+php artisan queue:work
+```
+
+### **2. Weather Update Job** (Runs every hour)
+
+- Automatically updates weather data every hour.
+- Run Laravel Scheduler:
+
+```bash
+php artisan schedule:work
+```
+
+**Manually Dispatch Weather Job:**
+
+```bash
+php artisan tinker
+>>> dispatch(new \App\Jobs\UpdateWeatherJob());
+```
+
+**Manually Dispatch Welcome Email Job:**
+
+```bash
+php artisan email:send-welcome 1
+```
+
+(Replace `1` with a valid user ID)
+
+---
+
+## 🧪 Running Tests
+
+To run PHPUnit tests:
+
+```bash
+php artisan test
+```
+
+Or test a specific file:
+
+```bash
+php artisan test --filter UserTest
+php artisan test --filter PostTest
+```
+
+---
+
+## 🚀 Deployment
+
+1. **Set Up Database & Queues**
+2. **Run Migrations**
+
+```bash
+php artisan migrate --force
+```
+
+3. **Start Queue Worker & Scheduler**
+
+```bash
+php artisan queue:work --daemon &
+php artisan schedule:work &
+```
+
+4. **Configure a Cron Job (for scheduler)**
+
+```bash
+crontab -e
+```
+
+Add this line:
+
+```bash
+* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+```

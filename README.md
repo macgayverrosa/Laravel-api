@@ -205,6 +205,13 @@ To run PHPUnit tests:
 php artisan test
 ```
 
+Or test a specific file:
+
+```bash
+php artisan test --filter UserTest
+php artisan test --filter PostTest
+```
+
 ---
 
 ## 🚀 Deployment
