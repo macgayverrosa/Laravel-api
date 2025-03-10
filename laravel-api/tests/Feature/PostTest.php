@@ -35,12 +35,14 @@ class PostTest extends TestCase
                  ->assertJsonStructure(['status', 'success', 'message', 'data']);
     }
 
-    /**
-     * Test fetching all posts.
-     */
-    public function test_user_can_get_all_posts()
-    {
-        Post::factory()->count(5)->create();
+    // Test fetching all posts
+    public function test_user_can_get_all_posts() {
+        $create = $this->postJson('/api/posts', [
+            'title' => 'Test Post',
+            'content' => 'This is a test post content.',
+        ], [
+            'Authorization' => 'Bearer ' . $this->token,
+        ]);
 
         $response = $this->getJson('/api/posts', [
             'Authorization' => 'Bearer ' . $this->token,
@@ -50,22 +52,22 @@ class PostTest extends TestCase
                  ->assertJsonStructure(['status', 'success', 'data']);
     }
 
-    // /**
-    //  * Test updating a post.
-    //  */
-    // public function test_user_can_update_own_post()
-    // {
-    //     $post = Post::factory()->create(['user_id' => $this->user->id]);
+    /**
+     * Test updating a post.
+     */
+    public function test_user_can_update_own_post()
+    {
+        $post = Post::factory()->create(['user_id' => $this->user->id]);
 
-    //     $response = $this->patchJson("/api/posts/{$post->id}", [
-    //         'title' => 'Updated Title',
-    //     ], [
-    //         'Authorization' => 'Bearer ' . $this->token,
-    //     ]);
+        $response = $this->patchJson("/api/posts/{$post->id}", [
+            'title' => 'Updated Title',
+        ], [
+            'Authorization' => 'Bearer ' . $this->token,
+        ]);
 
-    //     $response->assertStatus(200)
-    //              ->assertJsonFragment(['message' => 'Post updated']);
-    // }
+        $response->assertStatus(200)
+                 ->assertJsonFragment(['message' => 'Post updated']);
+    }
 
     // /**
     //  * Test deleting a post.
